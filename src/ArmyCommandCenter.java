@@ -135,7 +135,7 @@ public class ArmyCommandCenter extends JFrame {
         );
         
         if (response == JOptionPane.YES_OPTION) {
-            System.out.println("Mission Terminated. Powering down...");
+            System.out.println("Mission Terminated. All Unsaved Data Terminated. Powering System Down...");
             System.exit(0);
         }
     }
