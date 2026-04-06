@@ -99,10 +99,10 @@ public class ArmyCommandCenter extends JFrame {
                 BorderFactory.createLineBorder(sessionCamoGreen.darker(), 10),
                 BorderFactory.createEmptyBorder(15, 15, 15, 15)
             ));
-            statusLog.append("SYSTEM: CAMOUFLAGE RE-HUE APPLIED (SESSION HUE).\n");
+            statusLog.append("SYSTEM: SUCCESS! CAMOUFLAGE RE-HUE HAS BEEN APPLIED (SESSION HUE).\n");
         });
 
-        // ITEM 4: Terminate the Mission
+        // ITEM 4: Terminate The Mission
         JMenuItem exitItem = new JMenuItem("4. Terminate Mission");
         exitItem.setMnemonic(KeyEvent.VK_4);
         exitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_4, InputEvent.CTRL_DOWN_MASK));
