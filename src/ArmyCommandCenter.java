@@ -29,7 +29,7 @@ public class ArmyCommandCenter extends JFrame {
         // --- BASE CONFIGURATION ---
         setTitle("Ryley's U.S. ARMY: STRATEGIC OPERATIONS COMMAND");
         setSize(650, 500);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE); // Handle exit via confirm dialog
         
         // --- PERSISTENT CAMOUFLAGE HUE FOR THE SESSION ---
         Random rand = new Random();
@@ -58,6 +58,14 @@ public class ArmyCommandCenter extends JFrame {
         add(mainPanel);
         setLocationRelativeTo(null);
         setVisible(true);
+
+        // Optional: Add the same confirmation to the 'X' button on the window
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                confirmExit();
+            }
+        });
     }
 
     private JMenuBar createMilitaryMenu() {
@@ -92,21 +100,20 @@ public class ArmyCommandCenter extends JFrame {
         camoItem.setMnemonic(KeyEvent.VK_3);
         camoItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_3, InputEvent.CTRL_DOWN_MASK));
         camoItem.addActionListener(e -> {
-            // CAMOUFLAGE RE-HUE APPLIED USING THE SAME SESSION HUE FOR CONSISTENCY
             mainPanel.setBackground(sessionCamoGreen);
             statusLog.setBackground(sessionCamoGreen.darker().darker());
             mainPanel.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(sessionCamoGreen.darker(), 10),
                 BorderFactory.createEmptyBorder(15, 15, 15, 15)
             ));
-            statusLog.append("SYSTEM: SUCCESS! CAMOUFLAGE RE-HUE HAS BEEN APPLIED (SESSION HUE).\n");
+            statusLog.append("SYSTEM: CAMOUFLAGE RE-HUE APPLIED (SESSION HUE).\n");
         });
 
-        // ITEM 4: Terminate The Mission
+        // ITEM 4: Terminate the Mission
         JMenuItem exitItem = new JMenuItem("4. Terminate Mission");
         exitItem.setMnemonic(KeyEvent.VK_4);
         exitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_4, InputEvent.CTRL_DOWN_MASK));
-        exitItem.addActionListener(e -> System.exit(0));
+        exitItem.addActionListener(e -> confirmExit());
 
         missionMenu.add(timeItem);
         missionMenu.add(saveItem);
@@ -116,6 +123,21 @@ public class ArmyCommandCenter extends JFrame {
         menuBar.add(missionMenu);
 
         return menuBar;
+    }
+
+    private void confirmExit() {
+        int response = JOptionPane.showConfirmDialog(
+            this,
+            "Are you sure you want to terminate the mission? All unsaved tactical data will be lost.",
+            "MISSION EXIT PROTOCOL",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.WARNING_MESSAGE
+        );
+        
+        if (response == JOptionPane.YES_OPTION) {
+            System.out.println("Mission Terminated. Powering down...");
+            System.exit(0);
+        }
     }
 
     public static void main(String[] args) {
